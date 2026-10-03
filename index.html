@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP Ops Copilot | ERP智能运维与实施支持 Agent</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;background:#f5f7fb;color:#172033;line-height:1.7}
+.hero{background:linear-gradient(135deg,#162b55,#315fa8);color:white;padding:70px 8% 60px}
+.hero h1{font-size:42px;margin:0 0 8px}.hero h2{font-size:22px;font-weight:500;margin:0 0 24px;opacity:.92}
+.hero p{max-width:850px;font-size:17px;opacity:.88}
+.badge{display:inline-block;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:20px;margin:5px 5px 0 0;font-size:14px}
+main{max-width:1050px;margin:auto;padding:38px 22px 70px}
+section{background:white;border-radius:14px;padding:28px;margin-bottom:22px;box-shadow:0 3px 15px rgba(0,0,0,.05)}
+h2{color:#234b87;margin-top:0}h3{margin-bottom:7px}
+.flow{background:#eef4ff;border-radius:10px;padding:18px;text-align:center;font-weight:600;line-height:2}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{border:1px solid #e3e8f0;border-radius:10px;padding:17px}
+.card h3{color:#315fa8;margin-top:0}
+.result{font-size:28px;font-weight:700;color:#315fa8}
+small{color:#667085}
+footer{text-align:center;color:#7b8495;padding:20px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>ERP Ops Copilot</h1>
+<h2>ERP 智能运维与实施支持 Agent</h2>
+<p>
+面向 ERP 日常运维与实施支持场景构建的智能 Agent 原型，
+将知识检索、ERP API/SQL 查询、业务规则判断、异常诊断与 UAT 辅助整合到统一工作流中。
+</p>
+<span class="badge">Python</span>
+<span class="badge">ERP API</span>
+<span class="badge">SQL</span>
+<span class="badge">RAG</span>
+<span class="badge">Dify</span>
+<span class="badge">UAT</span>
+</div>
+
+<main>
+
+<section>
+<h2>01｜项目目标</h2>
+<p>
+针对 ERP 支持过程中“问题定位依赖人工、业务规则分散、查询路径长”的场景，
+设计 ERP Ops Copilot。用户以自然语言提出问题后，系统根据意图选择知识检索、
+ERP 数据查询或异常诊断路径，并输出具有业务依据的处理结果。
+</p>
+</section>
+
+<section>
+<h2>02｜Agent 工作链路</h2>
+<div class="flow">
+用户问题 → 意图识别 / 路由<br>
+↓<br>
+RAG 知识检索 ｜ ERP HTTP API / SQL 查询 ｜ 业务规则诊断<br>
+↓<br>
+结果整合与依据返回<br>
+↓<br>
+异常处理建议 / UAT 辅助
+</div>
+</section>
+
+<section>
+<h2>03｜核心模块</h2>
+<div class="grid">
+<div class="card"><h3>知识检索 RAG</h3><p>基于 ERP 运维知识与业务规则进行检索，为回答提供上下文依据。</p></div>
+<div class="card"><h3>ERP 数据查询</h3><p>通过 API / SQL 查询订单、库存等业务数据，并形成结构化结果。</p></div>
+<div class="card"><h3>异常诊断</h3><p>将库存、订单状态及业务规则组合，识别阻塞条件和异常原因。</p></div>
+<div class="card"><h3>UAT 辅助</h3><p>围绕正常、异常及边界场景设计测试 Case，验证业务规则与接口返回。</p></div>
+</div>
+</section>
+
+<section>
+<h2>04｜代表性业务 Case</h2>
+<h3>库存不足诊断</h3>
+<p>
+当销售订单请求数量超过当前可用库存时，系统查询对应 SKU 库存，
+结合业务规则返回 <strong>BLOCK</strong> 状态，并给出库存不足的诊断依据，
+避免仅返回无解释的系统错误。
+</p>
+
+<h3>ERP 知识问答</h3>
+<p>
+对于流程、字段和异常处理类问题，Agent 优先检索知识库内容，
+减少重复人工查询，并保留回答依据。
+</p>
+</section>
+
+<section>
+<h2>05｜测试与验证</h2>
+<div class="grid">
+<div class="card"><div class="result">API</div><small>接口与健康检查</small></div>
+<div class="card"><div class="result">SQL</div><small>业务数据查询验证</small></div>
+<div class="card"><div class="result">UAT</div><small>正常 / 异常 / 边界 Case</small></div>
+<div class="card"><div class="result">RAG</div><small>知识检索链路验证</small></div>
+</div>
+<p>
+项目通过自动化测试、回归测试及独立测试 Case 对核心链路进行验证，
+重点检查业务规则、异常路径和结果可解释性。
+</p>
+</section>
+
+<section>
+<h2>06｜项目定位</h2>
+<p>
+本项目为 ERP 智能运维与实施支持的可运行原型，
+重点验证 Agent 与企业业务系统结合时的流程设计、数据查询、
+异常诊断、知识检索及测试方法。
+</p>
+<p><strong>作者：陈睿｜信息管理与信息系统</strong></p>
+</section>
+
+</main>
+
+<footer>ERP Ops Copilot · Portfolio Project</footer>
+</body>
+</html>
