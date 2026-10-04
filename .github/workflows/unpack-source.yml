@@ -19,6 +19,7 @@ jobs:
           test -f source-release.zip
           python -m zipfile -e source-release.zip .
           rm source-release.zip
+          rm -f .github/workflows/tests.yml
 
       - name: Commit expanded project
         run: |
