@@ -1,0 +1,442 @@
+{
+  "note": "Sealed post-implementation synthetic holdout. Authored after V3 engineering changes and not used to tune the implementation after first execution.",
+  "cases": [
+    {
+      "id": "H01",
+      "question": "帮我看下 PO-100 还差多少没收货",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "剩余2件"
+        },
+        {
+          "type": "field",
+          "path": "record.status",
+          "equals": "PARTIAL_RECEIVED"
+        }
+      ]
+    },
+    {
+      "id": "H02",
+      "question": "采购单po101是不是已经验完了",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "已完成验收"
+        },
+        {
+          "type": "field",
+          "path": "record.remaining_qty",
+          "equals": 0
+        }
+      ]
+    },
+    {
+      "id": "H03",
+      "question": "PO102 到货了吗？",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "累计验收0件"
+        },
+        {
+          "type": "field",
+          "path": "record.status",
+          "equals": "PENDING_RECEIPT"
+        }
+      ]
+    },
+    {
+      "id": "H04",
+      "question": "PO999 查一下现在什么状态",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "未找到业务对象"
+        }
+      ]
+    },
+    {
+      "id": "H05",
+      "question": "SO-100 卡在哪里，怎么处理？",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "库存不足"
+        },
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "BLOCK"
+        }
+      ]
+    },
+    {
+      "id": "H06",
+      "question": "SO102 这单现在可以发货吗",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "库存满足"
+        },
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "ALLOW"
+        }
+      ]
+    },
+    {
+      "id": "H07",
+      "question": "so101 已经出库了吗？",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "已完成出库"
+        },
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "COMPLETED"
+        }
+      ]
+    },
+    {
+      "id": "H08",
+      "question": "SO999 帮我定位一下异常",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "未找到业务对象"
+        }
+      ]
+    },
+    {
+      "id": "H09",
+      "question": "SKU2 现在有几件？",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 16
+        },
+        {
+          "type": "field",
+          "path": "record.sku",
+          "equals": "SKU002"
+        }
+      ]
+    },
+    {
+      "id": "H10",
+      "question": "sku1 最近的库存流水给我看看",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 3
+        },
+        {
+          "type": "list_min",
+          "path": "recent_movements",
+          "min": 1
+        }
+      ]
+    },
+    {
+      "id": "H11",
+      "question": "SKU3 还有没有货？",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 0
+        }
+      ]
+    },
+    {
+      "id": "H12",
+      "question": "SKU999 库存情况",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "未找到业务对象"
+        }
+      ]
+    },
+    {
+      "id": "H13",
+      "question": "哪些商品已经低于安全库存？",
+      "route": "stock_summary",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "SKU003=0"
+        },
+        {
+          "type": "field",
+          "path": "rows.2.stock_health",
+          "equals": "LOW"
+        }
+      ]
+    },
+    {
+      "id": "H14",
+      "question": "给我看一下全部库存汇总",
+      "route": "stock_summary",
+      "assertions": [
+        {
+          "type": "list_min",
+          "path": "rows",
+          "min": 3
+        }
+      ]
+    },
+    {
+      "id": "H15",
+      "question": "收货为什么一定要关联采购订单？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:1"
+        }
+      ]
+    },
+    {
+      "id": "H16",
+      "question": "库存台账到底是干嘛的？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "02_inventory_traceability:1"
+        }
+      ]
+    },
+    {
+      "id": "H17",
+      "question": "ERP里怎么防止超卖？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:1"
+        }
+      ]
+    },
+    {
+      "id": "H18",
+      "question": "Fit Gap做完差异识别之后下一步是什么？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "05_fit_gap_method:1"
+        }
+      ]
+    },
+    {
+      "id": "H19",
+      "question": "用户验收测试一般应该覆盖哪些情况？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "04_permissions_uat:2"
+        }
+      ]
+    },
+    {
+      "id": "H20",
+      "question": "为什么采购和销售角色要做权限隔离？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "04_permissions_uat:1"
+        }
+      ]
+    },
+    {
+      "id": "H21",
+      "question": "采购单只到了一部分货，后面再到货怎么处理？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:2"
+        }
+      ]
+    },
+    {
+      "id": "H22",
+      "question": "库存不够时销售订单为什么不能先出库？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:1"
+        }
+      ]
+    },
+    {
+      "id": "H23",
+      "question": "新增分批验收需求，如何验收？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "partial_receipt"
+        },
+        {
+          "type": "list_min",
+          "path": "uat.cases",
+          "min": 6
+        }
+      ]
+    },
+    {
+      "id": "H24",
+      "question": "库存不足时禁止销售出库，这个需求的测试场景有哪些？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "sales_shipping"
+        },
+        {
+          "type": "case_kind",
+          "value": "exception"
+        },
+        {
+          "type": "case_kind",
+          "value": "idempotency"
+        }
+      ]
+    },
+    {
+      "id": "H25",
+      "question": "采购审批权限怎么做UAT？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "permission"
+        },
+        {
+          "type": "case_kind",
+          "value": "permission"
+        }
+      ]
+    },
+    {
+      "id": "H26",
+      "question": "新增一个必填字段，测试用例怎么设计？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "generic"
+        },
+        {
+          "type": "case_kind",
+          "value": "invalid"
+        }
+      ]
+    },
+    {
+      "id": "H27",
+      "question": "重复提交销售出库请求的测试用例",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "sales_shipping"
+        },
+        {
+          "type": "case_kind",
+          "value": "idempotency"
+        }
+      ]
+    },
+    {
+      "id": "H28",
+      "question": "SKU 002 最近采购销售怎么变化？",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 16
+        },
+        {
+          "type": "list_min",
+          "path": "recent_movements",
+          "min": 2
+        }
+      ]
+    },
+    {
+      "id": "H29",
+      "question": "低库存补货预警现在怎么判断？",
+      "route": "stock_summary",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "SKU003=0"
+        }
+      ]
+    },
+    {
+      "id": "H30",
+      "question": "采购5件已经收3件，还能再收3件吗？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:3"
+        }
+      ]
+    },
+    {
+      "id": "H31",
+      "question": "销售订单扣库存时写库失败，订单状态应该怎么办？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:3"
+        }
+      ]
+    },
+    {
+      "id": "H32",
+      "question": "这个作品可以说自己做过真实SAP上线吗？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "05_fit_gap_method:2"
+        }
+      ]
+    }
+  ]
+}

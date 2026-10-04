@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: ERP Ops Copilot Read-only Tool API
+  version: 3.0.0
+  description: >-
+    Read-only portfolio API for ERP knowledge retrieval, SQL-backed queries,
+    diagnosis and UAT assistance. It never accepts arbitrary SQL.
+servers:
+  - url: https://REPLACE_WITH_PUBLIC_HTTPS_HOST
+paths:
+  /api/health:
+    get:
+      operationId: health
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string}
+                  service: {type: string}
+                  version: {type: string}
+  /api/query:
+    post:
+      operationId: queryErpOpsCopilot
+      summary: Route and answer an ERP support query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+                  example: SO100为什么不能出库？
+      responses:
+        '200':
+          description: Structured ERP support response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: {type: string}

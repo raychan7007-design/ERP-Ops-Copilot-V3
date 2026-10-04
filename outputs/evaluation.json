@@ -1,0 +1,162 @@
+{
+  "evaluation_type": "fixed synthetic functional regression; not model accuracy or production benchmark",
+  "n": 17,
+  "passed": 17,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "cases": [
+    {
+      "question": "PO100为什么还是部分验收？",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "content_assertion": "剩余2件",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "PO102为什么还在待验收？",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "content_assertion": "累计验收0件",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "SO100为什么不能出库？",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "content_assertion": "库存不足",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "SO102现在能不能出库？",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "content_assertion": "库存满足",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "SKU001库存多少？",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "content_assertion": "当前库存3件",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "SKU003库存多少？",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "content_assertion": "当前库存0件",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "给我看库存汇总和安全库存",
+      "expected_route": "stock_summary",
+      "actual_route": "stock_summary",
+      "route_pass": true,
+      "content_assertion": "SKU001=3",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "为什么库存余额还需要库存流水？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "content_assertion": "库存余额",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "验收为什么必须关联采购订单？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "content_assertion": "采购订单",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "Fit-Gap分析之后还要做什么？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "content_assertion": "AS-IS",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "销售库存不足怎么处理？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "content_assertion": "销售订单",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "采购和销售角色为什么要分权限？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "content_assertion": "采购",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "分批验收怎么做UAT？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "content_assertion": "UAT",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "库存不足出库怎么设计测试用例？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "content_assertion": "UAT",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "权限功能如何验收？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "content_assertion": "UAT",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "SO999为什么不能出库？",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "content_assertion": "未找到业务对象",
+      "content_pass": true,
+      "pass": true
+    },
+    {
+      "question": "PO999状态是什么？",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "content_assertion": "未找到业务对象",
+      "content_pass": true,
+      "pass": true
+    }
+  ]
+}

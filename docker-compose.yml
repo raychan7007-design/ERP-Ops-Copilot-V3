@@ -1,0 +1,9 @@
+services:
+  erp-ops-copilot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      ERP_OPS_HOST: 0.0.0.0
+      ERP_OPS_PORT: 8000
+      ERP_OPS_MAX_QUERY_LENGTH: 1000

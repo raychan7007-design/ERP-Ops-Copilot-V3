@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.env
+.git/
+outputs/
+data/erp_demo.db

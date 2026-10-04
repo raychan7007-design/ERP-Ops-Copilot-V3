@@ -1,0 +1,2 @@
+# Core project uses Python standard library only (Python 3.10+).
+# No package installation is required for CLI, web demo, tests, or evaluation.

@@ -1,0 +1,11 @@
+flowchart LR
+    U[User Question] --> R[Intent Router]
+    R -->|knowledge| K[RAG Knowledge Retrieval]
+    R -->|PO/SO/SKU/summary| T[Read-only ERP Tool API]
+    R -->|uat| A[UAT Assistant]
+    T --> Q[(SQLite / MySQL-compatible ERP Data Model)]
+    T --> D[Rule Diagnosis]
+    K --> S[Evidence-based Synthesis]
+    D --> S
+    A --> S
+    S --> O[Conclusion + Evidence + Trace + Next Action]

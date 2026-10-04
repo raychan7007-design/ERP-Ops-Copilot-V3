@@ -1,0 +1,7 @@
+{
+  "dataset": "holdout_cases.json",
+  "sha256": "09983b338fb09fd8ee32c7137c5752f720127e89dbf332d02484e661b6beed67",
+  "n": 32,
+  "policy": "May be used to identify engineering defects before the final sealed holdout.",
+  "evaluation_type": "synthetic validation/acceptance set; used during V3 development; not holdout or production accuracy"
+}

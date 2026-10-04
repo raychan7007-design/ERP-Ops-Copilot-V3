@@ -1,0 +1,575 @@
+
+### PO100为什么还是部分验收？
+{
+  "type": "purchase_diagnosis",
+  "record": {
+    "po_id": "PO100",
+    "status": "PARTIAL_RECEIVED",
+    "created_at": "2026-09-28 09:00:00",
+    "supplier_name": "华南打印设备供应商",
+    "sku": "SKU001",
+    "product_name": "P2000 Series Laser Printer",
+    "ordered_qty": 5,
+    "received_qty": 3,
+    "remaining_qty": 2
+  },
+  "reason": "采购5件，累计验收3件，剩余2件未验收，因此状态为部分验收。",
+  "action": "继续按原采购单登记剩余到货；每次验收数量必须大于0且不得超过剩余待验收量。",
+  "checks": [
+    {
+      "check": "received_not_negative",
+      "actual": 3,
+      "expected": ">=0",
+      "pass": true
+    },
+    {
+      "check": "received_not_over_ordered",
+      "actual": 3,
+      "expected": "<= 5",
+      "pass": true
+    },
+    {
+      "check": "remaining_consistent",
+      "actual": 2,
+      "expected": 2,
+      "pass": true
+    },
+    {
+      "check": "partial_status_rule",
+      "actual": 3,
+      "expected": "0 < received_qty < 5",
+      "pass": true
+    }
+  ],
+  "evidence": {
+    "source": "SQL",
+    "movements": [
+      {
+        "source_type": "PURCHASE_RECEIPT",
+        "source_id": "PO100",
+        "sku": "SKU001",
+        "qty_delta": 3,
+        "stock_before": 0,
+        "stock_after": 3,
+        "occurred_at": "2026-09-29 11:00:00"
+      }
+    ]
+  },
+  "tool_trace": [
+    {
+      "tool": "get_purchase_order",
+      "purpose": "按采购订单查询供应商、SKU、采购量、累计验收量与剩余量。",
+      "tables": [
+        "purchase_orders",
+        "suppliers",
+        "purchase_order_items",
+        "products"
+      ],
+      "join": "PO→supplier；PO→item；item→product",
+      "params": {
+        "po_id": "PO100"
+      }
+    },
+    {
+      "tool": "movements_by_source",
+      "purpose": "按PO/SO来源单据追溯对应库存流水。",
+      "tables": [
+        "stock_movements"
+      ],
+      "join": "无",
+      "params": {
+        "source_id": "PO100"
+      }
+    }
+  ],
+  "route": "purchase_diagnosis",
+  "entities": {
+    "po_id": "PO100",
+    "so_id": null,
+    "sku": null
+  },
+  "question": "PO100为什么还是部分验收？",
+  "route_trace": {
+    "matched_rule": "purchase_order_diagnosis",
+    "reason": "识别到采购订单号且问题涉及验收/状态，进入采购诊断。",
+    "checks": [
+      {
+        "rule": "uat_keywords",
+        "matched": false
+      },
+      {
+        "rule": "sales_order_diagnosis",
+        "matched": false
+      },
+      {
+        "rule": "purchase_order_diagnosis",
+        "matched": true
+      }
+    ]
+  }
+}
+
+### SO100为什么不能出库？
+{
+  "type": "sales_diagnosis",
+  "record": {
+    "so_id": "SO100",
+    "status": "BLOCKED_STOCK",
+    "created_at": "2026-10-01 08:30:00",
+    "sku": "SKU001",
+    "product_name": "P2000 Series Laser Printer",
+    "qty": 5,
+    "stock_qty": 3,
+    "stock_after_if_shipped": -2
+  },
+  "stock": {
+    "sku": "SKU001",
+    "product_name": "P2000 Series Laser Printer",
+    "category": "Printer",
+    "stock_qty": 3,
+    "safety_stock": 2,
+    "below_safety_stock": 0,
+    "updated_at": "2026-10-01 08:00:00"
+  },
+  "reason": "订单需求5件，当前可用库存3件，需求超过库存，命中库存不足校验，因此阻止出库。",
+  "action": "补货至少2件后重新校验，或按业务规则调整订单数量。",
+  "decision": {
+    "result": "BLOCK",
+    "shortage_qty": 2
+  },
+  "checks": [
+    {
+      "check": "qty_positive",
+      "actual": 5,
+      "expected": ">0",
+      "pass": true
+    },
+    {
+      "check": "stock_non_negative",
+      "actual": 3,
+      "expected": ">=0",
+      "pass": true
+    },
+    {
+      "check": "stock_sufficient",
+      "actual": 3,
+      "expected": ">= 5",
+      "pass": false
+    }
+  ],
+  "evidence": {
+    "source": "SQL",
+    "movements": []
+  },
+  "tool_trace": [
+    {
+      "tool": "get_sales_order",
+      "purpose": "按销售订单查询SKU、订单数量、当前库存与假设出库后库存。",
+      "tables": [
+        "sales_orders",
+        "sales_order_items",
+        "products",
+        "inventory"
+      ],
+      "join": "SO→item→product/inventory",
+      "params": {
+        "so_id": "SO100"
+      }
+    },
+    {
+      "tool": "get_stock",
+      "purpose": "按SKU查询商品、当前库存与安全库存，用于库存事实查询和低库存判断。",
+      "tables": [
+        "products",
+        "inventory"
+      ],
+      "join": "products.sku = inventory.sku",
+      "params": {
+        "sku": "SKU001"
+      }
+    },
+    {
+      "tool": "movements_by_source",
+      "purpose": "按PO/SO来源单据追溯对应库存流水。",
+      "tables": [
+        "stock_movements"
+      ],
+      "join": "无",
+      "params": {
+        "source_id": "SO100"
+      }
+    }
+  ],
+  "route": "sales_diagnosis",
+  "entities": {
+    "po_id": null,
+    "so_id": "SO100",
+    "sku": null
+  },
+  "question": "SO100为什么不能出库？",
+  "route_trace": {
+    "matched_rule": "sales_order_diagnosis",
+    "reason": "识别到销售订单号且问题涉及状态、库存或异常，进入销售诊断。",
+    "checks": [
+      {
+        "rule": "uat_keywords",
+        "matched": false
+      },
+      {
+        "rule": "sales_order_diagnosis",
+        "matched": true
+      }
+    ]
+  }
+}
+
+### SKU002现在库存多少，最近发生了什么？
+{
+  "type": "sku_query",
+  "record": {
+    "sku": "SKU002",
+    "product_name": "T200 Toner Cartridge",
+    "category": "Consumable",
+    "stock_qty": 16,
+    "safety_stock": 5,
+    "below_safety_stock": 0,
+    "updated_at": "2026-09-30 14:05:00"
+  },
+  "recent_movements": [
+    {
+      "source_type": "SALES_SHIPMENT",
+      "source_id": "SO101",
+      "sku": "SKU002",
+      "qty_delta": -4,
+      "stock_before": 20,
+      "stock_after": 16,
+      "occurred_at": "2026-09-30 14:05:00"
+    },
+    {
+      "source_type": "PURCHASE_RECEIPT",
+      "source_id": "PO101",
+      "sku": "SKU002",
+      "qty_delta": 20,
+      "stock_before": 0,
+      "stock_after": 20,
+      "occurred_at": "2026-09-28 16:00:00"
+    }
+  ],
+  "answer": "SKU002 当前库存16件，安全库存5件，库存状态=正常。",
+  "evidence": {
+    "source": "SQL"
+  },
+  "tool_trace": [
+    {
+      "tool": "get_stock",
+      "purpose": "按SKU查询商品、当前库存与安全库存，用于库存事实查询和低库存判断。",
+      "tables": [
+        "products",
+        "inventory"
+      ],
+      "join": "products.sku = inventory.sku",
+      "params": {
+        "sku": "SKU002"
+      }
+    },
+    {
+      "tool": "recent_movements",
+      "purpose": "查询SKU最近库存流水，解释库存“为什么变成现在这样”。",
+      "tables": [
+        "stock_movements"
+      ],
+      "join": "无",
+      "params": {
+        "sku": "SKU002",
+        "limit": 5
+      }
+    }
+  ],
+  "route": "sku_query",
+  "entities": {
+    "po_id": null,
+    "so_id": null,
+    "sku": "SKU002"
+  },
+  "question": "SKU002现在库存多少，最近发生了什么？",
+  "route_trace": {
+    "matched_rule": "sku_query",
+    "reason": "识别到SKU且问题需要业务事实，进入SQL查询。",
+    "checks": [
+      {
+        "rule": "uat_keywords",
+        "matched": false
+      },
+      {
+        "rule": "sales_order_diagnosis",
+        "matched": false
+      },
+      {
+        "rule": "purchase_order_diagnosis",
+        "matched": false
+      },
+      {
+        "rule": "sku_query",
+        "matched": true
+      }
+    ]
+  }
+}
+
+### 为什么库存余额还需要库存流水？
+{
+  "type": "knowledge",
+  "answer": "库存余额与库存流水：库存余额回答“现在还有多少”，库存流水回答“为什么变成这样”。 每次采购验收入库或销售出库都应该写一条来源明确的库存流水。；超量验收控制：如果累计验收将超过采购数量，系统应整体拒绝本次验收。 拒绝后累计验收数量、库存余额和库存流水都不得变化，避免产生部分提交。；流水字段：库存流水至少包含来源类型、来源单据号、SKU、变动数量、变动前库存、变动后库存和发生时间。 通过 source_id 可以从PO或SO追溯库存变化。",
+  "evidence": [
+    {
+      "source": "02_inventory_traceability.md",
+      "title": "库存余额与库存流水",
+      "chunk_id": "02_inventory_traceability:1",
+      "rank": 1,
+      "score": 1.4085,
+      "matched_terms": [
+        "余额",
+        "存余",
+        "存流",
+        "库存",
+        "流水"
+      ],
+      "excerpt": "库存余额回答“现在还有多少”，库存流水回答“为什么变成这样”。 每次采购验收入库或销售出库都应该写一条来源明确的库存流水。"
+    },
+    {
+      "source": "01_procurement_receiving.md",
+      "title": "超量验收控制",
+      "chunk_id": "01_procurement_receiving:3",
+      "rank": 2,
+      "score": 0.8194,
+      "matched_terms": [
+        "余额",
+        "存余",
+        "存流",
+        "库存",
+        "流水"
+      ],
+      "excerpt": "如果累计验收将超过采购数量，系统应整体拒绝本次验收。 拒绝后累计验收数量、库存余额和库存流水都不得变化，避免产生部分提交。"
+    },
+    {
+      "source": "02_inventory_traceability.md",
+      "title": "流水字段",
+      "chunk_id": "02_inventory_traceability:2",
+      "rank": 3,
+      "score": 0.6461,
+      "matched_terms": [
+        "存流",
+        "库存",
+        "流水"
+      ],
+      "excerpt": "库存流水至少包含来源类型、来源单据号、SKU、变动数量、变动前库存、变动后库存和发生时间。 通过 source_id 可以从PO或SO追溯库存变化。"
+    }
+  ],
+  "confidence": "high",
+  "retrieval_trace": {
+    "expanded_query": "为什么库存余额还需要库存流水？",
+    "top_k": 3,
+    "top_hits": [
+      {
+        "rank": 1,
+        "chunk_id": "02_inventory_traceability:1",
+        "score": 1.4085,
+        "base_score": 0.5085,
+        "keyword_boost": 1.1,
+        "matched_terms": [
+          "余额",
+          "存余",
+          "存流",
+          "库存",
+          "流水"
+        ]
+      },
+      {
+        "rank": 2,
+        "chunk_id": "01_procurement_receiving:3",
+        "score": 0.8194,
+        "base_score": 0.2194,
+        "keyword_boost": 0.6,
+        "matched_terms": [
+          "余额",
+          "存余",
+          "存流",
+          "库存",
+          "流水"
+        ]
+      },
+      {
+        "rank": 3,
+        "chunk_id": "02_inventory_traceability:2",
+        "score": 0.6461,
+        "base_score": 0.1861,
+        "keyword_boost": 0.46,
+        "matched_terms": [
+          "存流",
+          "库存",
+          "流水"
+        ]
+      }
+    ]
+  },
+  "tool_trace": [
+    {
+      "tool": "knowledge_retriever",
+      "purpose": "从ERP知识库检索可引用规则",
+      "method": "local TF-IDF-like cosine + domain query expansion"
+    }
+  ],
+  "route": "knowledge",
+  "entities": {
+    "po_id": null,
+    "so_id": null,
+    "sku": null
+  },
+  "question": "为什么库存余额还需要库存流水？",
+  "route_trace": {
+    "matched_rule": "knowledge_fallback",
+    "reason": "未识别结构化业务对象或测试意图，进入知识库检索。",
+    "checks": [
+      {
+        "rule": "uat_keywords",
+        "matched": false
+      },
+      {
+        "rule": "sales_order_diagnosis",
+        "matched": false
+      },
+      {
+        "rule": "purchase_order_diagnosis",
+        "matched": false
+      },
+      {
+        "rule": "sku_query",
+        "matched": false
+      },
+      {
+        "rule": "stock_summary",
+        "matched": false
+      },
+      {
+        "rule": "sales_order_fallback",
+        "matched": false
+      },
+      {
+        "rule": "purchase_order_fallback",
+        "matched": false
+      },
+      {
+        "rule": "sku_fallback",
+        "matched": false
+      },
+      {
+        "rule": "knowledge_fallback",
+        "matched": true
+      }
+    ]
+  }
+}
+
+### 新增分批验收功能，允许多次到货但累计不得超过采购数量，怎么做UAT？
+{
+  "type": "uat",
+  "answer": "已按6个场景覆盖正常、边界、异常/权限和一致性维度。",
+  "uat": {
+    "requirement": "新增分批验收功能，允许多次到货但累计不得超过采购数量，怎么做UAT？",
+    "requirement_type": "partial_receipt",
+    "coverage_dimensions": [
+      "boundary",
+      "idempotency",
+      "invalid",
+      "normal"
+    ],
+    "principles": [
+      "正常场景",
+      "边界场景",
+      "异常/权限场景",
+      "数据一致性/幂等"
+    ],
+    "cases": [
+      {
+        "id": "UAT-01",
+        "kind": "normal",
+        "focus": "主流程",
+        "scenario": "一次足量验收",
+        "input": "采购5，验收5",
+        "expected": "累计验收=5，状态=验收完成，库存+5"
+      },
+      {
+        "id": "UAT-02",
+        "kind": "normal",
+        "focus": "状态流转",
+        "scenario": "分两次完成验收",
+        "input": "采购5，先验收3再验收2",
+        "expected": "第一次状态=部分验收；第二次状态=验收完成；累计=5"
+      },
+      {
+        "id": "UAT-03",
+        "kind": "boundary",
+        "focus": "上限边界",
+        "scenario": "首次超量验收",
+        "input": "采购5，首次验收6",
+        "expected": "拒绝提交；累计验收与库存不变"
+      },
+      {
+        "id": "UAT-04",
+        "kind": "boundary",
+        "focus": "累计边界+一致性",
+        "scenario": "部分验收后累计超量",
+        "input": "采购5，已验收3，再验收3",
+        "expected": "拒绝第二次提交；累计仍=3；不产生异常库存流水"
+      },
+      {
+        "id": "UAT-05",
+        "kind": "invalid",
+        "focus": "下限边界",
+        "scenario": "零数量验收",
+        "input": "采购5，验收0",
+        "expected": "拒绝提交并提示验收数量必须>0"
+      },
+      {
+        "id": "UAT-06",
+        "kind": "idempotency",
+        "focus": "重复提交",
+        "scenario": "重复提交同一验收请求",
+        "input": "采购5，已成功验收3，再重复提交相同请求",
+        "expected": "不得重复增加库存；需要幂等控制或人工确认"
+      }
+    ],
+    "generation_trace": {
+      "method": "deterministic rule template",
+      "case_count": 6,
+      "no_llm_required": true
+    }
+  },
+  "evidence": {
+    "source": "规则模板"
+  },
+  "tool_trace": [
+    {
+      "tool": "uat_generator",
+      "purpose": "将需求拆成可执行验收场景",
+      "method": "deterministic rule template"
+    }
+  ],
+  "route": "uat",
+  "entities": {
+    "po_id": null,
+    "so_id": null,
+    "sku": null
+  },
+  "question": "新增分批验收功能，允许多次到货但累计不得超过采购数量，怎么做UAT？",
+  "route_trace": {
+    "matched_rule": "uat_keywords",
+    "reason": "问题包含测试/验收意图，进入UAT辅助。",
+    "checks": [
+      {
+        "rule": "uat_keywords",
+        "matched": true
+      }
+    ]
+  }
+}

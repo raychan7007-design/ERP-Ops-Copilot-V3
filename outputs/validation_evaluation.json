@@ -1,0 +1,816 @@
+{
+  "evaluation_type": "synthetic validation/acceptance set; used during V3 development; not holdout or production accuracy",
+  "dataset_sha256": "09983b338fb09fd8ee32c7137c5752f720127e89dbf332d02484e661b6beed67",
+  "n": 32,
+  "passed": 32,
+  "failed": 0,
+  "case_pass_rate": 1.0,
+  "route_passed": 32,
+  "route_accuracy": 1.0,
+  "assertions_passed": 48,
+  "assertions_total": 48,
+  "assertion_pass_rate": 1.0,
+  "cases": [
+    {
+      "id": "H01",
+      "question": "帮我看下 PO-100 还差多少没收货",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "剩余2件"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.status",
+            "equals": "PARTIAL_RECEIVED"
+          },
+          "actual": "PARTIAL_RECEIVED",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H02",
+      "question": "采购单po101是不是已经验完了",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "已完成验收"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.remaining_qty",
+            "equals": 0
+          },
+          "actual": 0,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H03",
+      "question": "PO102 到货了吗？",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "累计验收0件"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.status",
+            "equals": "PENDING_RECEIPT"
+          },
+          "actual": "PENDING_RECEIPT",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H04",
+      "question": "PO999 查一下现在什么状态",
+      "expected_route": "purchase_diagnosis",
+      "actual_route": "purchase_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "未找到业务对象"
+          },
+          "actual": "present",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H05",
+      "question": "SO-100 卡在哪里，怎么处理？",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "库存不足"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "decision.result",
+            "equals": "BLOCK"
+          },
+          "actual": "BLOCK",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H06",
+      "question": "SO102 这单现在可以发货吗",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "库存满足"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "decision.result",
+            "equals": "ALLOW"
+          },
+          "actual": "ALLOW",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H07",
+      "question": "so101 已经出库了吗？",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "已完成出库"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "decision.result",
+            "equals": "COMPLETED"
+          },
+          "actual": "COMPLETED",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H08",
+      "question": "SO999 帮我定位一下异常",
+      "expected_route": "sales_diagnosis",
+      "actual_route": "sales_diagnosis",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "未找到业务对象"
+          },
+          "actual": "present",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H09",
+      "question": "SKU2 现在有几件？",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.stock_qty",
+            "equals": 16
+          },
+          "actual": 16,
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.sku",
+            "equals": "SKU002"
+          },
+          "actual": "SKU002",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H10",
+      "question": "sku1 最近的库存流水给我看看",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.stock_qty",
+            "equals": 3
+          },
+          "actual": 3,
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "list_min",
+            "path": "recent_movements",
+            "min": 1
+          },
+          "actual": 1,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H11",
+      "question": "SKU3 还有没有货？",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.stock_qty",
+            "equals": 0
+          },
+          "actual": 0,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H12",
+      "question": "SKU999 库存情况",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "未找到业务对象"
+          },
+          "actual": "present",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H13",
+      "question": "哪些商品已经低于安全库存？",
+      "expected_route": "stock_summary",
+      "actual_route": "stock_summary",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "SKU003=0"
+          },
+          "actual": "present",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "field",
+            "path": "rows.2.stock_health",
+            "equals": "LOW"
+          },
+          "actual": "LOW",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H14",
+      "question": "给我看一下全部库存汇总",
+      "expected_route": "stock_summary",
+      "actual_route": "stock_summary",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "list_min",
+            "path": "rows",
+            "min": 3
+          },
+          "actual": 3,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H15",
+      "question": "收货为什么一定要关联采购订单？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "01_procurement_receiving:1"
+          },
+          "actual": [
+            "01_procurement_receiving:1",
+            "02_inventory_traceability:1",
+            "02_inventory_traceability:3"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H16",
+      "question": "库存台账到底是干嘛的？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "02_inventory_traceability:1"
+          },
+          "actual": [
+            "02_inventory_traceability:1",
+            "02_inventory_traceability:2",
+            "02_inventory_traceability:intro"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H17",
+      "question": "ERP里怎么防止超卖？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "03_sales_shipping:1"
+          },
+          "actual": [
+            "03_sales_shipping:1",
+            "02_inventory_traceability:1",
+            "03_sales_shipping:intro"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H18",
+      "question": "Fit Gap做完差异识别之后下一步是什么？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "05_fit_gap_method:1"
+          },
+          "actual": [
+            "05_fit_gap_method:1",
+            "05_fit_gap_method:intro",
+            "02_inventory_traceability:1"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H19",
+      "question": "用户验收测试一般应该覆盖哪些情况？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "04_permissions_uat:2"
+          },
+          "actual": [
+            "04_permissions_uat:2",
+            "04_permissions_uat:intro",
+            "02_inventory_traceability:1"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H20",
+      "question": "为什么采购和销售角色要做权限隔离？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "04_permissions_uat:1"
+          },
+          "actual": [
+            "04_permissions_uat:1",
+            "04_permissions_uat:intro",
+            "02_inventory_traceability:1"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H21",
+      "question": "采购单只到了一部分货，后面再到货怎么处理？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "01_procurement_receiving:2"
+          },
+          "actual": [
+            "01_procurement_receiving:3",
+            "01_procurement_receiving:1",
+            "01_procurement_receiving:2"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H22",
+      "question": "库存不够时销售订单为什么不能先出库？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "03_sales_shipping:1"
+          },
+          "actual": [
+            "03_sales_shipping:1",
+            "03_sales_shipping:2",
+            "02_inventory_traceability:1"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H23",
+      "question": "新增分批验收需求，如何验收？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "uat.requirement_type",
+            "equals": "partial_receipt"
+          },
+          "actual": "partial_receipt",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "list_min",
+            "path": "uat.cases",
+            "min": 6
+          },
+          "actual": 6,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H24",
+      "question": "库存不足时禁止销售出库，这个需求的测试场景有哪些？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "uat.requirement_type",
+            "equals": "sales_shipping"
+          },
+          "actual": "sales_shipping",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "case_kind",
+            "value": "exception"
+          },
+          "actual": [
+            "normal",
+            "boundary",
+            "boundary",
+            "invalid",
+            "exception",
+            "idempotency"
+          ],
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "case_kind",
+            "value": "idempotency"
+          },
+          "actual": [
+            "normal",
+            "boundary",
+            "boundary",
+            "invalid",
+            "exception",
+            "idempotency"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H25",
+      "question": "采购审批权限怎么做UAT？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "uat.requirement_type",
+            "equals": "permission"
+          },
+          "actual": "permission",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "case_kind",
+            "value": "permission"
+          },
+          "actual": [
+            "normal",
+            "permission",
+            "normal",
+            "permission"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H26",
+      "question": "新增一个必填字段，测试用例怎么设计？",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "uat.requirement_type",
+            "equals": "generic"
+          },
+          "actual": "generic",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "case_kind",
+            "value": "invalid"
+          },
+          "actual": [
+            "normal",
+            "boundary",
+            "invalid",
+            "idempotency",
+            "exception"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H27",
+      "question": "重复提交销售出库请求的测试用例",
+      "expected_route": "uat",
+      "actual_route": "uat",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "uat.requirement_type",
+            "equals": "sales_shipping"
+          },
+          "actual": "sales_shipping",
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "case_kind",
+            "value": "idempotency"
+          },
+          "actual": [
+            "normal",
+            "boundary",
+            "boundary",
+            "invalid",
+            "exception",
+            "idempotency"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H28",
+      "question": "SKU 002 最近采购销售怎么变化？",
+      "expected_route": "sku_query",
+      "actual_route": "sku_query",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "field",
+            "path": "record.stock_qty",
+            "equals": 16
+          },
+          "actual": 16,
+          "pass": true
+        },
+        {
+          "assertion": {
+            "type": "list_min",
+            "path": "recent_movements",
+            "min": 2
+          },
+          "actual": 2,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H29",
+      "question": "低库存补货预警现在怎么判断？",
+      "expected_route": "stock_summary",
+      "actual_route": "stock_summary",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "contains",
+            "value": "SKU003=0"
+          },
+          "actual": "present",
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H30",
+      "question": "采购5件已经收3件，还能再收3件吗？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "01_procurement_receiving:3"
+          },
+          "actual": [
+            "01_procurement_receiving:1",
+            "01_procurement_receiving:intro",
+            "01_procurement_receiving:3"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H31",
+      "question": "销售订单扣库存时写库失败，订单状态应该怎么办？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "03_sales_shipping:3"
+          },
+          "actual": [
+            "03_sales_shipping:1",
+            "03_sales_shipping:2",
+            "03_sales_shipping:3"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "H32",
+      "question": "这个作品可以说自己做过真实SAP上线吗？",
+      "expected_route": "knowledge",
+      "actual_route": "knowledge",
+      "route_pass": true,
+      "assertions": [
+        {
+          "assertion": {
+            "type": "evidence_chunk",
+            "value": "05_fit_gap_method:2"
+          },
+          "actual": [
+            "05_fit_gap_method:2",
+            "02_inventory_traceability:3",
+            "05_fit_gap_method:intro"
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true
+    }
+  ]
+}

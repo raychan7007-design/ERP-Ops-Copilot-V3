@@ -1,0 +1,7 @@
+{
+  "dataset": "holdout_cases_v3.json",
+  "sha256": "6d06e4bbfbdf3e93d3ccdb8f9c10eab85c37b4e3f6e45b35587a8a470f01c245",
+  "n": 29,
+  "policy": "Execute once after freeze. Do not modify V3 implementation based on the completed result; report failures as-is.",
+  "evaluation_type": "sealed synthetic post-validation holdout; not production accuracy or independent third-party benchmark"
+}

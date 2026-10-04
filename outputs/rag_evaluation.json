@@ -1,0 +1,165 @@
+{
+  "evaluation_type": "hand-authored synthetic retrieval regression; not production RAG accuracy",
+  "n": 13,
+  "recall_at_1": 1.0,
+  "recall_at_3": 1.0,
+  "mrr": 1.0,
+  "cases": [
+    {
+      "question": "验收为什么必须挂在采购单下面？",
+      "expected_chunk": "01_procurement_receiving:1",
+      "top_chunks": [
+        "01_procurement_receiving:1",
+        "01_procurement_receiving:2",
+        "01_procurement_receiving:intro"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "采购5个先收3个，订单是什么状态？",
+      "expected_chunk": "01_procurement_receiving:2",
+      "top_chunks": [
+        "01_procurement_receiving:2",
+        "01_procurement_receiving:1",
+        "01_procurement_receiving:3"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "到货数量超过采购数量怎么办？",
+      "expected_chunk": "01_procurement_receiving:3",
+      "top_chunks": [
+        "01_procurement_receiving:3",
+        "01_procurement_receiving:1",
+        "01_procurement_receiving:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "库存余额和库存台账有什么区别？",
+      "expected_chunk": "02_inventory_traceability:1",
+      "top_chunks": [
+        "02_inventory_traceability:1",
+        "01_procurement_receiving:3",
+        "02_inventory_traceability:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "库存流水里至少要记录哪些字段？",
+      "expected_chunk": "02_inventory_traceability:2",
+      "top_chunks": [
+        "02_inventory_traceability:2",
+        "02_inventory_traceability:1",
+        "03_sales_shipping:3"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "什么时候需要补货预警？",
+      "expected_chunk": "02_inventory_traceability:3",
+      "top_chunks": [
+        "02_inventory_traceability:3",
+        "02_inventory_traceability:1",
+        "03_sales_shipping:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "为什么不能库存不够也先发货？",
+      "expected_chunk": "03_sales_shipping:1",
+      "top_chunks": [
+        "03_sales_shipping:1",
+        "02_inventory_traceability:1",
+        "03_sales_shipping:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "销售单库存不足时状态怎么处理？",
+      "expected_chunk": "03_sales_shipping:2",
+      "top_chunks": [
+        "03_sales_shipping:2",
+        "03_sales_shipping:1",
+        "02_inventory_traceability:1"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "写库存失败以后订单已经更新怎么办？",
+      "expected_chunk": "03_sales_shipping:3",
+      "top_chunks": [
+        "03_sales_shipping:3",
+        "03_sales_shipping:1",
+        "01_procurement_receiving:1"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "销售角色能不能做采购审批？",
+      "expected_chunk": "04_permissions_uat:1",
+      "top_chunks": [
+        "04_permissions_uat:1",
+        "04_permissions_uat:intro",
+        "01_procurement_receiving:1"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "用户验收测试需要覆盖哪些情况？",
+      "expected_chunk": "04_permissions_uat:2",
+      "top_chunks": [
+        "04_permissions_uat:2",
+        "04_permissions_uat:intro",
+        "01_procurement_receiving:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "Fit-Gap分析不能只写缺功能还要做什么？",
+      "expected_chunk": "05_fit_gap_method:1",
+      "top_chunks": [
+        "05_fit_gap_method:1",
+        "05_fit_gap_method:intro",
+        "04_permissions_uat:2"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    },
+    {
+      "question": "这个项目能不能说自己做过SAP上线？",
+      "expected_chunk": "05_fit_gap_method:2",
+      "top_chunks": [
+        "05_fit_gap_method:2",
+        "05_fit_gap_method:1",
+        "03_sales_shipping:1"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_3": true
+    }
+  ]
+}

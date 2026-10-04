@@ -1,0 +1,397 @@
+{
+  "note": "Sealed post-validation synthetic holdout. Authored after validation fixes; not used to tune V3 after first completed execution.",
+  "cases": [
+    {
+      "id": "T01",
+      "question": "PO100 还剩几台没验收？",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.remaining_qty",
+          "equals": 2
+        },
+        {
+          "type": "contains",
+          "value": "部分验收"
+        }
+      ]
+    },
+    {
+      "id": "T02",
+      "question": "PO101 还有待收数量吗",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.remaining_qty",
+          "equals": 0
+        },
+        {
+          "type": "field",
+          "path": "record.status",
+          "equals": "RECEIVED"
+        }
+      ]
+    },
+    {
+      "id": "T03",
+      "question": "po102当前收货进度",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.received_qty",
+          "equals": 0
+        },
+        {
+          "type": "field",
+          "path": "record.ordered_qty",
+          "equals": 4
+        }
+      ]
+    },
+    {
+      "id": "T04",
+      "question": "PO404",
+      "route": "purchase_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "未找到业务对象"
+        }
+      ]
+    },
+    {
+      "id": "T05",
+      "question": "SO100到底差多少库存？",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "decision.shortage_qty",
+          "equals": 2
+        },
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "BLOCK"
+        }
+      ]
+    },
+    {
+      "id": "T06",
+      "question": "SO102出完后预计还剩多少？",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "decision.projected_stock_after",
+          "equals": 13
+        },
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "ALLOW"
+        }
+      ]
+    },
+    {
+      "id": "T07",
+      "question": "SO101查下来源流水",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "decision.result",
+          "equals": "COMPLETED"
+        },
+        {
+          "type": "list_min",
+          "path": "evidence.movements",
+          "min": 1
+        }
+      ]
+    },
+    {
+      "id": "T08",
+      "question": "SO404库存异常",
+      "route": "sales_diagnosis",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "未找到业务对象"
+        }
+      ]
+    },
+    {
+      "id": "T09",
+      "question": "SKU001库存健康吗？",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 3
+        },
+        {
+          "type": "field",
+          "path": "record.below_safety_stock",
+          "equals": 0
+        }
+      ]
+    },
+    {
+      "id": "T10",
+      "question": "SKU002最近变动记录",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "list_min",
+          "path": "recent_movements",
+          "min": 2
+        }
+      ]
+    },
+    {
+      "id": "T11",
+      "question": "SKU003安全库存是多少？",
+      "route": "sku_query",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "record.safety_stock",
+          "equals": 1
+        },
+        {
+          "type": "field",
+          "path": "record.stock_qty",
+          "equals": 0
+        }
+      ]
+    },
+    {
+      "id": "T12",
+      "question": "目前有哪些低库存SKU？",
+      "route": "stock_summary",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "SKU003=0"
+        }
+      ]
+    },
+    {
+      "id": "T13",
+      "question": "库存汇总里哪些是LOW？",
+      "route": "stock_summary",
+      "assertions": [
+        {
+          "type": "list_min",
+          "path": "rows",
+          "min": 3
+        }
+      ]
+    },
+    {
+      "id": "T14",
+      "question": "采购到货记录为什么不能脱离采购单？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:1"
+        }
+      ]
+    },
+    {
+      "id": "T15",
+      "question": "多次收货时什么时候从部分验收变成完成？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:2"
+        }
+      ]
+    },
+    {
+      "id": "T16",
+      "question": "收货数量比下单数量多应该怎么控制？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "01_procurement_receiving:3"
+        }
+      ]
+    },
+    {
+      "id": "T17",
+      "question": "只存当前库存数字有什么问题？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "02_inventory_traceability:1"
+        }
+      ]
+    },
+    {
+      "id": "T18",
+      "question": "库存变动日志要不要存变动前和变动后？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "02_inventory_traceability:2"
+        }
+      ]
+    },
+    {
+      "id": "T19",
+      "question": "出库前为什么要先检查可用库存？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:1"
+        }
+      ]
+    },
+    {
+      "id": "T20",
+      "question": "销售单从待出库到已经发货，状态怎么流转？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:2"
+        }
+      ]
+    },
+    {
+      "id": "T21",
+      "question": "库存更新失败以后为什么必须回滚？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "03_sales_shipping:3"
+        }
+      ]
+    },
+    {
+      "id": "T22",
+      "question": "越权审批为什么必须拦截？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "04_permissions_uat:1"
+        }
+      ]
+    },
+    {
+      "id": "T23",
+      "question": "用户验收阶段为什么还要测边界和异常？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "04_permissions_uat:2"
+        }
+      ]
+    },
+    {
+      "id": "T24",
+      "question": "AS-IS和TO-BE在差异分析里怎么串起来？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "05_fit_gap_method:1"
+        }
+      ]
+    },
+    {
+      "id": "T25",
+      "question": "这个ERP模拟项目的真实性边界是什么？",
+      "route": "knowledge",
+      "assertions": [
+        {
+          "type": "evidence_chunk",
+          "value": "05_fit_gap_method:2"
+        }
+      ]
+    },
+    {
+      "id": "T26",
+      "question": "分批验收的验收用例怎么写？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "partial_receipt"
+        },
+        {
+          "type": "case_kind",
+          "value": "idempotency"
+        }
+      ]
+    },
+    {
+      "id": "T27",
+      "question": "销售出库遇到库存不足，验收用例怎么写？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "sales_shipping"
+        },
+        {
+          "type": "case_kind",
+          "value": "exception"
+        }
+      ]
+    },
+    {
+      "id": "T28",
+      "question": "角色权限的测试场景怎么覆盖？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "permission"
+        },
+        {
+          "type": "case_kind",
+          "value": "permission"
+        }
+      ]
+    },
+    {
+      "id": "T29",
+      "question": "订单备注字段改为必填，测试场景怎么覆盖？",
+      "route": "uat",
+      "assertions": [
+        {
+          "type": "field",
+          "path": "uat.requirement_type",
+          "equals": "generic"
+        },
+        {
+          "type": "case_kind",
+          "value": "invalid"
+        },
+        {
+          "type": "case_kind",
+          "value": "idempotency"
+        }
+      ]
+    }
+  ]
+}

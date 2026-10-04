@@ -1,0 +1,2 @@
+GET /api/health => {"status":"ok","service":"erp-ops-copilot","version":"v3"}
+POST /api/query {"query":"SO100到底差多少库存？"} => route=sales_diagnosis, decision={"result":"BLOCK","shortage_qty":2}
